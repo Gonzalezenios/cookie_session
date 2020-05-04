@@ -1,17 +1,24 @@
 const express = require('express')
 const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 
+const MONGO_URL = 'mongodb://127.0.0.1:27017/auth'
 const app = express()
 
-app.unsubscribe(session({
+app.use(session({
    secret: 'ESTO ES SECRETO',
    resave: true,
-   saveUninitialized: true 
+   saveUninitialized: true,
+   store: new MongoStore({
+       url: MONGO_URL,
+       autoReconnect: true
+   })
 }))
 
 
 app.get('/', (req, res) => {
-    res.send('Hola!!')
+    req.session.cuenta = req.session.cuenta ? req.session.cuenta + 1 : 1; 
+    res.send(`Hola! Observaste esta pagina: ${req.session.cuenta}`)
 })
 
 app.listen(3000, () => {
