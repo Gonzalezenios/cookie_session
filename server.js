@@ -8,10 +8,12 @@ const app = express()
 
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URL);    
-mongoose.connect.on('error', (err) => {
-    throw err;
-    process.exit(1);
-})
+// mongoose.connect.on('error', (err) => {
+//     // throw err;
+//     // process.exit(1);
+// })
+
+// revisar porque pasa este error
 
 const user = require('./Models/user');
 const u = new user({
